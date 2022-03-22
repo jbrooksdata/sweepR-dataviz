@@ -8,6 +8,11 @@ womens_games <- load_player_games("womens")%>%
   filter(team == "USA")%>%
   filter(throws != "0")
 
+team_avg <- womens_games %>% # calculate team average
+  pull(throw_accuracy) %>%
+  mean() %>%
+  signif(3)
+
 # create viz
 womens_games %>%
   ggplot(aes(x = throw_accuracy,fill = team)) +
@@ -21,6 +26,10 @@ womens_games %>%
              alpha = 0.4,
              size = 1.5,
              color = "red") +
+  geom_vline(xintercept = team_avg, # team average - dashed line
+             alpha = 0.75,
+             size = 0.5,
+             linetype = "dashed") +
   scale_fill_manual(values = "#c9dbff") +
   ylim(0,0.04) +
   theme_fivethirtyeight() +
